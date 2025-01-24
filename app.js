@@ -4,6 +4,9 @@ const bcrypt = require ("bcrypt")
 const cors = require ("cors")
 const jwt = require ("jsonwebtoken")
 
+const QuizRoutes = require('./routes/quizRoutes');
+const quiz = require('./models/quiz');
+
 
 const userModel=require("./models/users")
 const ecomodel = require("./models/users")
@@ -12,6 +15,8 @@ let app=express()
 app.use(express.json())
 app.use(cors())
 
+app.use(bodyParser.json());
+
 
 const generateHashedpassword=async (password)=>{
     const salt=await bcrypt.genSalt(10)
@@ -19,6 +24,10 @@ const generateHashedpassword=async (password)=>{
 }
 
 mongoose.connect("mongodb+srv://sandras02:sandrasmenon@cluster0.3g103sn.mongodb.net/ecovibe?retryWrites=true&w=majority&appName=Cluster0")
+
+
+
+app.use('/api/quiz', QuizRoutes);
 // api for signup
 
 app.post("/signup",async(req,res)=>{
@@ -65,6 +74,11 @@ app.post("/signin",async(req,res)=>{
     }
    ).catch()
 })
+
+
+
+
+
 app.listen(9090,()=>{
     console.log("server started")
 })
